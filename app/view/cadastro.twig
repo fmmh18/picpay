@@ -1,0 +1,61 @@
+{% extends 'template.twig' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center"><h2>Cadastrar Usuário</h2></div>
+            <div class="col-12">
+                <hr>
+                <p>
+                    <a href="{{ baseURL }}" class="btn btn-secondary">Voltar</a>
+                </p>
+            </div>
+            <div class="col-12">
+                <form id="formCadastro" method="post" action="{{ baseURL }}adicionar">
+                    <div class="form-group">
+                        <label for="inputNome">Nome</label>
+                        <input type="text" class="form-control" id="inputNome" name="inputNome" placeholder="Nome Completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCPF">CPF</label>
+                        <input type="text" class="form-control" id="inputCPF" name="inputCPF" placeholder="CPF">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTelefone">Telefone</label>
+                        <input type="text" class="form-control" id="inputTelefone" name="inputTelefone" placeholder="(99) 99999-9999 ">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail">E-mail</label>
+                        <input type="text" class="form-control" id="inputEmail" name="inputEmail" placeholder="E-mail">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputUsuario">Usuário</label>
+                        <input type="text" class="form-control" id="inputUsuario" name="inputUsuario" placeholder="Usuário">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputSenha">Senha</label>
+                        <input type="password" class="form-control" id="inputSenha" name="inputSenha" placeholder="Senha">
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck" name="example1" onchange="habilitar()">
+                        <label class="custom-control-label" for="customCheck">Lojista</label>
+                    </div>
+                    <div id="divoculta" style="display: none">
+                    <div class="form-group">
+                        <label for="inputCNPJ">CNPJ</label>
+                        <input type="text" class="form-control" id="inputCNPJ" name="inputCNPJ" placeholder="CNPJ">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRazaoSocial">Razão Social</label>
+                        <input type="text" class="form-control" id="inputRazaoSocial" name="inputRazaoSocial" placeholder="Razão Social">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputNomeFantasia">Nome Fantasia</label>
+                        <input type="text" class="form-control" id="inputNomeFantasia" name="inputNomeFantasia" placeholder="Nome Fantasia">
+                    </div>
+                    </div>
+                    <div class="form-group"><input type="submit" class="btn btn-primary btn-block" value="Cadastrar" name="action"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

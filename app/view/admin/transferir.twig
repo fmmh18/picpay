@@ -1,0 +1,13 @@
+{% extends 'admin/template.twig' %}
+{% block content %}
+<p><b>obs: o valor maximo que pode ser transferido é de R$100,00</b></p>
+    <div class="col-12">
+        <span>{{ usuario[0].nome }}</span>
+    </div>
+    <form method="post" action="{{ baseURL }}admin/transferir">
+        <div class="col-12">
+            <span></span>
+        </div>
+    </form>
+
+{% endblock %}

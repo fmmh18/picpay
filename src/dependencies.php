@@ -4,7 +4,7 @@ use Slim\App;
 
 defined('DS') ?: define('DS', DIRECTORY_SEPARATOR);
 defined('ROOT') ?: define('ROOT', dirname(__DIR__) . DS);
-defined('BASE') ?: define('BASE', "http://".$_SERVER['SERVER_NAME'] . DS."acrilux/");
+defined('BASE') ?: define('BASE', "http://".$_SERVER['SERVER_NAME'] . DS."picpay/");
 
 return function (App $app) {
     $container = $app->getContainer();

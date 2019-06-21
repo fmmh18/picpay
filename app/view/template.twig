@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
     <title>{{ title }}</title>
 </head>
 <body>
@@ -15,8 +15,106 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js" integrity="sha256-C6CB9UYIS9UJeqinPHWTHVqh/E1uhG5Twh+Y5qFQmYg=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
+<script src="http://jqueryvalidation.org/files/dist/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        var maskBehavior = function (val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+            },
+            options = {onKeyPress: function(val, e, field, options) {
+                    field.mask(maskBehavior.apply({}, arguments), options);
+                }
+            };
+
+        $('#telefone').mask(maskBehavior, options);
+        $('#inputCPF').mask('000.000.000-00', {reverse: true});
+        $('#inputCNPJ').mask('00.000.000/0000-00', {reverse: true});
+
+        $( "#formCadastro" ).validate({
+            rules: {
+                inputNome:{
+                    required : true
+                },
+                inputCPF:{
+                    required : true
+                },
+                inputTelefone:{
+                    required: true
+                },
+                inputEmail:{
+                    required:true,
+                    inputEmail:true
+                },
+                inputUsuario:{
+                    required:true
+                },
+                inputSenha:{
+                    required:true
+                }
+
+            },
+            messages:{
+                inputNome:{
+                    required:"Campo Nome obrigatório."
+                },
+                inputCPF:{
+                    required:"Campo CPF obrigatório."
+                },
+                inputTelefone:{
+                    required:"Campo Telefone obrigatório."
+                },
+                inputEmail:{
+                    required:"Campo E-mail obrigatório.",
+                    email: "Digite um E-mail válido."
+                },
+                inputUsuario:{
+                    required:"Campo Usuário obrigatório."
+                },
+                inputSenha:{
+                    required:"Campo Senha obrigatório."
+                }
+            },
+            errorElement: "em",
+            errorPlacement: function ( error, element ) {
+                // Add the `help-block` class to the error element
+                error.addClass( "help-block" );
+
+                if ( element.prop( "type" ) === "checkbox" ) {
+                    error.insertAfter( element.parent( "label" ) );
+                } else {
+                    error.insertAfter( element );
+                }
+            },
+            highlight: function ( element, errorClass, validClass ) {
+                $( element ).parents( ".form-control" ).addClass( "has-error" ).removeClass( "has-success" );
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $( element ).parents( ".form-control" ).addClass( "has-success" ).removeClass( "has-error" );
+            }
+
+
+        });
+    });
+    {% if data.msg is not empty %}
+        toastr.{{ data.tipo }}('{{ data.msg }}');
+    {}
+    {% endif %}
+
+     function habilitar()
+     {
+         if(document.getElementById("customCheck").checked == true)
+         {
+             $("#divoculta").show();
+         }else{
+             $("#divoculta").hide();
+         }
+     }
+
+</script>
 </body>
 </html>
