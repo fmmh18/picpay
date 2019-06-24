@@ -73,4 +73,15 @@ class Usuario extends Conexao
         $usuario = $this->pdo->query("SELECT * FROM usuario WHERE status = 1")->fetchAll(\PDO::FETCH_OBJ);
         return $usuario;
     }
+    public function transferir($transferir)
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO transacao (mandante,receptor,valor,status) VALUES(:mandante,:receptor,:valor,:status)");
+        $stmt->execute(array(
+            ":mandante"=>$transferir['mandante'],
+            ":receptor"=>$transferir['receptor'],
+            ":valor"=>$transferir['valor'],
+            ":status"=>1
+        ));
+        return $stmt->rowCount();
+    }
 }

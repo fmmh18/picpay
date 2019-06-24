@@ -124,10 +124,13 @@ class Principal extends Controller
     }
     public function home(Request $request, Response $response, array $args)
     {
+        $usuariomodel = new Usuario();
         $res = new \Slim\Http\Response();
         session_start();
         if(!empty($_SESSION['sessionID'])){
-            return $this->view->render($response,'admin/principal.twig',['header'=>'Dashboard']);
+            $login =  $_SESSION['usuarioLogin'];
+            $info = $usuariomodel->dadosusuario($login);
+            return $this->view->render($response,'admin/principal.twig',['header'=>'Dashboard','usuario'=>$info]);
         }else{
             return $res->withRedirect('/picpay/admin/login');
         }
@@ -153,11 +156,40 @@ class Principal extends Controller
     public function enviar(Request $request, Response $response, array $args)
     {
         $usuariomodel = new Usuario();
+        $lojamodel = new Loja();
         $res = new \Slim\Http\Response();
+        $post = $request->getParsedBody();
+
+
+        $usuariomandate  = $post['usuariomandate'];
+        $usuarioreceptor = $post['usuarioreceptor'];
+        $lojareceptor    = $post['lojareceptor'];
+        $valor           = number_format($post['inputValor'],2,'.','.');
+
         session_start();
         if(!empty($_SESSION['sessionID'])){
             $login =  $_SESSION['usuarioLogin'];
-            return $this->view->render($response,'admin/transferir.twig',['header'=>'Transferir']);
+            $info = $usuariomodel->dadosusuario($login);
+            $usuarios = $usuariomodel->listarUsuarioAtivos();
+            $lojas = $lojamodel->listarLojaAtivos();
+
+            if($valor >='100.00'){
+                $data = array('msg'=>"Valor acima do permitido para trasferência.",'tipo'=>"error");
+            }else{
+                if($usuariomandate == $usuarioreceptor){
+                    $data = array('msg'=>"Você não pode enviar valores para o mesmo.",'tipo'=>"error");
+                }else{
+                    $transferir = array('mandante'=>$usuariomandate,'receptor'=>$usuarioreceptor,'valor'=>$valor);
+                    $inserir = $usuariomodel->transferir($transferir);
+                    if($inserir == 1){
+                        $data = array('msg'=>"Transação efetuada com sucesso.",'tipo'=>"success");
+                    }else{
+                        $data = array('msg'=>"Transação não pode ser efetuada.",'tipo'=>"error");
+                    }
+                }
+            }
+
+            return $this->view->render($response,'admin/transferir.twig',['header'=>'Transferir','usuario'=>$info,'usuarios'=>$usuarios,'lojas'=>$lojas,'data'=>$data]);
         }else{
             return $res->withRedirect('/picpay/admin/login');
         }

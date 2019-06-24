@@ -1,13 +1,26 @@
 {% extends 'admin/template.twig' %}
 {% block content %}
 <p><b>obs: o valor maximo que pode ser transferido é de R$100,00</b></p>
-    <div class="col-12">
-        <span>{{ usuario[0].nome }}</span>
-    </div>
+
     <form method="post" action="{{ baseURL }}admin/transferir">
-        <div class="col-12">
-            <span></span>
+        <input type="hidden" name="usuarioidmandate" value="{{ usuario[0].id }}"/>
+        <input type="hidden" name="usuariomandate" value="{{ usuario[0].usuario }}"/>
+        {% for usuario in usuarios %}
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline{{ usuario.id }}" name="usuarioreceptor" value="{{  usuario.usuario }}" class="custom-control-input">
+                <label class="custom-control-label" for="customRadioInline{{  usuario.id }}">{{ usuario.nome }}</label>
+            </div>
+        {% endfor %}
+        {% for loja in lojas %}
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="customRadioInline{{ loja.id }}" name="lojareceptor" value="{{  loja.usuario }}" class="custom-control-input">
+                <label class="custom-control-label" for="customRadioInline{{ loja.id }}">{{ loja.nomefantasia }}</label>
+            </div>
+        {% endfor %}
+        <div class="form-group">
+            <input type="text" name="inputValor" id="inputValor" class="form-control" placeholder="R$ 0,00"/>
         </div>
+        <input type="submit" value="Enviar" class="btn btn-block btn-primary"/>
     </form>
 
 {% endblock %}
